@@ -57,3 +57,6 @@ procedure_checkbox_plain = False  # pylint: disable=invalid-name
 
 # True to disable AcroForm text entry in the Approval name field.
 sig_name_plain = False  # pylint: disable=invalid-name
+
+# True to include the initial field in each signature.
+sig_include_initials = False  # pylint: disable=invalid-name

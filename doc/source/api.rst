@@ -21,9 +21,10 @@ Setup
    atform.add_signature
    atform.add_term
    atform.require_version
-   atform.set_procedure_checkbox_plain
    atform.set_project_info
-   atform.set_signature_name_plain
+   atform.set_checkbox_style_plain
+   atform.set_signature_style_plain
+   atform.set_signature_no_initials
 
 
 Content

@@ -17,7 +17,7 @@ from . import state
 def add_signature(title):
     """Adds an approval signature line.
 
-    The signature entry contains title, name, signature, and date
+    The signature entry contains title, name, signature, initials, and date
     fields that will appear at the conclusion of every test. Signatures
     will be presented in the order they are defined.
 
@@ -48,3 +48,21 @@ def set_signature_name_plain():
             """,
         )
     state.sig_name_plain = True
+
+@error.exit_on_script_error
+@misc.setup_only
+def set_signature_no_initials():
+    """Globally disables the initials field from the signature.
+
+    May only be called once in the setup area.
+    """
+    if state.sig_include_initials:
+            raise error.UserScriptError(
+                "Duplicate function call.",
+                """
+                This function can only be called once to remove the initials
+                from the signature entry; remove one of the calls to
+                this function.
+                """,
+            )
+    state.sig_include_initials = True

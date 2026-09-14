@@ -19,7 +19,6 @@ from . import (
 )
 from .textstyle import stylesheet
 
-
 # Number of characters the name text entry fields should be sized to
 # accommodate.
 NAME_WIDTH = 12
@@ -33,11 +32,30 @@ DATE_TITLE = f"Date ({DATE_FORMAT})"
 FIELD_TITLE_SEP = toLength("2 pt")
 
 
-# Column indices.
-NAME_COL = 0
-SIG_COL = NAME_COL + 1
-INITIAL_COL = SIG_COL + 1
-DATE_COL = INITIAL_COL + 1
+def init(include_initials):
+    """Initialize approval data to be used later.
+
+    Called by external process.
+    """
+    # Column indices.
+    global NAME_COL
+    global SIG_COL
+    global INCLUDE_INITIALS
+    global INITIAL_COL
+    global DATE_COL
+    col_num = 0
+
+    NAME_COL = col_num
+    col_num += 1
+    SIG_COL = col_num
+    col_num += 1
+    if include_initials:
+        INCLUDE_INITIALS = True
+        INITIAL_COL = col_num
+        col_num += 1
+    else:
+        INCLUDE_INITIALS = False
+    DATE_COL = col_num
 
 
 def make_approval(test, plain_name):
@@ -56,7 +74,11 @@ def make_approval(test, plain_name):
         name_col_width(plain_name),
         None,  # Signature occupies all remaining width.
         # The Initials column is sized to hold the header text.
-        layout.max_width(["Initials"], "SignatureFieldTitle"),
+        *(
+            (layout.max_width(["Initials"], "SignatureFieldTitle"),)
+            if INCLUDE_INITIALS
+            else ()
+        ),
         date_col_width(),
     ]
     style = list(
@@ -83,7 +105,8 @@ def make_sig_rows(title, plain_name):
         [
             name_entry_field(plain_name),
             None,  # Signature column is blank.
-            None,  # Initial column is blank.
+            # Optional initial field is blank
+            *((None,) if INCLUDE_INITIALS else ()),
             date_entry_field(),
         ],
     ]
@@ -95,7 +118,8 @@ def header_row():
     return [
         Preformatted("Name", sty),
         Preformatted("Signature", sty),
-        Preformatted("Initials", sty),
+        # Optional initial field
+        *((Preformatted("Initials", sty),) if INCLUDE_INITIALS else ()),
         Preformatted(DATE_TITLE, sty),
     ]
 

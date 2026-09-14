@@ -51,6 +51,7 @@ from atform.ref import (
 from atform.sig import (
     add_signature,
     set_signature_name_plain,
+    set_signature_no_initials,
 )
 
 from atform.term import (

@@ -90,6 +90,9 @@ def init(data):
     imgflow.IMAGES = data["images"]
     init_data.update(data)
 
+    # Set the initial state of variables used
+    approval.init(include_initials=state.sig_include_initials)
+
 
 def build(test, cached_page_count, path):
     """Builds a PDF document for a given test instance."""
